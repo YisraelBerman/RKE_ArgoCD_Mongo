@@ -7,10 +7,57 @@ A project that implements a RKE cluster with ArgoCD and MongoDB. The projects ha
 
 ### installation
 
-## usage
+This project is implemented on 3 machines on Vsphere.
 
-
-
+- Update your Linux System with the following commands:
+    ```
+    sudo apt-get -y update
+    sudo apt-get -y install openssh-server
+    sudo apt install -y sssd-ad sssd-tools realmd adcli nano vim tcpdump net-tools ca-certificates curl gnupg
+    ```
+- Disable swap and Modify sysctl entries with the following command:
+    ```
+    sudo vim /etc/fstab
+    # Add comment to swap line
+    sudo swapoff -a
+    ```
+- Set Hostname on Nodes:
+    On evry node run the following commands to set and configure the nodes hostnames:
+    ```
+    sudo hostnamectl set-hostname <node-hostname>
+    OR
+    sudo nano /etc/hosts
+    <node-ip> <node-hostname>
+    ```
+- Create rke user on master and workers servers with the following commands:
+    ```
+    adduser rke
+    passwd rke
+    sudo usermod -s /bin/bash rke
+    ```
+- Add rke user to sudoers:
+    ```
+    sudo nano /etc/sudoers.d/rke
+    #add the folling line to the file:
+    <!-- rke  ALL=(ALL:ALL) NOPASSWD: ALL -->
+    ```
+- Switch to rke user
+  ```
+  sudo su rke
+  ```
+- Create SSH key on the master server: 
+  ```
+  ssh-keygen -t rsa
+  ```
+- Copy the newly created ssh public key from master node to workers nodes manually or with the following function:
+    ```
+    for i in <node-1> <node-2> <node-x>  ; do
+        ssh-copy-id rke@$i
+    done
+        
+  # If you get Permission denied (publickey) while running ssh-copy-id ubuntu@remotemachine then on remote node edit the /etc/ssh/sshd_config file and update PasswordAuthentication from no to yes then restart the service using sudo systemctl restart sshd command
+  ```
+- Confirm you can login from your workstation (with user rke) - including login from master to itself --> ssh rke@<node_ip>
 
 rke built in ingress-nginx ( ingress image: rancher/nginx-ingress-controller:nginx-1.9.4-rancher1) 
 with editing /etc/hosts
@@ -92,6 +139,7 @@ to get to argocd:
 kubectl -n apps get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
 
+## usage
 
 
 
