@@ -2,8 +2,8 @@ replicaCount: 1
 namespace: apps
 
 image:
-  repository: yisraelbdocker/rkeapp
-  tag: "1.0.1"
+  repository: ghcr.io/YisraelBerman/flaskapp
+  tag: "4"
   pullPolicy: IfNotPresent
   imagePort: 5000
   mountPath: "/app/static"
