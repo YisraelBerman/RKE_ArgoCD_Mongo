@@ -2,8 +2,8 @@ replicaCount: 1
 namespace: apps
 
 image:
-  repository: ghcr.io/YisraelBerman/flaskapp
-  tag: "4"
+  repository: ghcr.io/yisraelberman/flaskapp
+  tag: "3"
   pullPolicy: IfNotPresent
   imagePort: 5000
   mountPath: "/app/static"
