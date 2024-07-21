@@ -40,7 +40,7 @@ jobs:
 
       - name: Update Helm chart with new image tag
         run: |
-          sed -i "s|repository: .*|repository: ghcr.io/${{ github.repository_owner }}/flaskapp|g" mychart/values.yaml
+          sed -i "s|repository: .*|repository: ghcr.io/${{ github.repository_owner | toLowerCase }}/flaskapp|g" mychart/values.yaml
           sed -i "s|tag: .*|tag: \"${{ env.VERSION }}\"|g" mychart/values.yaml
           git config --global user.name "YisraelBerman"
           git config --global user.email "yhsberman@gmail.com"
