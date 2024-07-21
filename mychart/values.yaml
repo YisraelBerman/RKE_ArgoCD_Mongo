@@ -1,0 +1,21 @@
+replicaCount: 1
+namespace: apps
+
+image:
+  repository: myimage
+  tag: "latest"
+  pullPolicy: IfNotPresent
+  imagePort: 5000
+  mountPath: "/app/static"
+
+
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  className: nginx
+  host: yisraelberman.local
+  path: /app
+  
