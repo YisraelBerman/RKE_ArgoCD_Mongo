@@ -47,7 +47,7 @@ jobs:
             git config --global user.email "yhsberman@gmail.com"
             git add mychart/values.yaml
             git commit -m "Update image tag to ${{ env.VERSION }}"
-            git remote set-url origin https://YisraelBerman:${{ secrets.gh_token }}@github.com/${{ github.repository_owner }}/RKE_ArgoCD_Mongo.git
+            git remote set-url origin https://${{ github.actor }}:${{ secrets.gh_token }}@github.com/${{ github.repository_owner }}/RKE_ArgoCD_Mongo.git
 
             git push origin helm
           else
