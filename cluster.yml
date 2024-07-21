@@ -1,0 +1,30 @@
+nodes:
+- address: 172.20.80.128
+  port: "22"
+  internal_address: ""
+  user:  rke
+  docker_socket: /var/run/docker.sock
+  role:
+    - controlplane
+    - etcd
+  ssh_key_path: /home/rke/.ssh/id_rsa
+  
+- address: 172.20.80.130
+  port: "22"
+  internal_address: ""
+  user:  rke
+  docker_socket: /var/run/docker.sock
+  role:
+    - worker
+    
+  ssh_key_path: /home/rke/.ssh/id_rsa
+
+- address: 172.20.80.102
+  port: "22"
+  internal_address: ""
+  user:  rke
+  docker_socket: /var/run/docker.sock
+  role:
+    - worker
+    
+  ssh_key_path: /home/rke/.ssh/id_rsa
