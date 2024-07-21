@@ -43,8 +43,8 @@ jobs:
           sed -i "s|repository: .*|repository: ghcr.io/${{ github.repository_owner }}/flaskapp|g" mychart/values.yaml
           sed -i "s|tag: .*|tag: \"${{ env.VERSION }}\"|g" mychart/values.yaml
           if ! git diff --exit-code --quiet; then
-            git config --global user.name "${{ github.actor }}"
-            git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+            git config --global user.name "YisraelBerman"
+            git config --global user.email "yhsberman@gmail.com"
             git add mychart/values.yaml
             git commit -m "Update image tag to ${{ env.VERSION }}"
             git remote set-url origin https://YisraelBerman:${{ secrets.gh_token }}@github.com/${{ github.repository_owner }}/RKE_ArgoCD_Mongo.git
