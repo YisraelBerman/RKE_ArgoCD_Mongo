@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-deployment
   namespace: {{ .Values.namespace }}
-
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -21,9 +20,9 @@ spec:
           ports:
             - containerPort: {{ .Values.image.imagePort }}
           volumeMounts:
-          - mountPath: {{ .Values.image.mountPath }}
-            name: storage
-        volumes:
+            - mountPath: {{ .Values.image.mountPath }}
+              name: storage
+      volumes:
         - name: storage
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-pvc

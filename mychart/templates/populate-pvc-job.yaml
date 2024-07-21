@@ -3,7 +3,6 @@ kind: Job
 metadata:
   name: {{ .Release.Name }}-populate-pvc
   namespace: {{ .Values.namespace }}
-
 spec:
   template:
     spec:
@@ -15,10 +14,10 @@ spec:
             - mkdir -p /mnt/data && echo "Populating PVC" &&
               wget -O /mnt/data/image.jpeg https://t4.ftcdn.net/jpg/00/67/24/59/240_F_67245954_ejVa8C414CwJ9X0UadIFu1QEUjeLuFnO.jpg;
           volumeMounts:
-          - name: storage
-            mountPath: /mnt/data
-        restartPolicy: OnFailure
-        volumes:
+            - name: storage
+              mountPath: /mnt/data
+      restartPolicy: OnFailure
+      volumes:
         - name: storage
           persistentVolumeClaim:
-              claimName: {{ .Release.Name }}-pvc
+            claimName: {{ .Release.Name }}-pvc

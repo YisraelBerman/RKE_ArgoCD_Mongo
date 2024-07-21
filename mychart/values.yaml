@@ -2,7 +2,7 @@ replicaCount: 1
 namespace: apps
 
 image:
-  repository: myimage
+  repository: yisraelbdocker/rkeapp
   tag: "latest"
   pullPolicy: IfNotPresent
   imagePort: 5000
