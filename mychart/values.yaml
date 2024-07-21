@@ -3,7 +3,7 @@ namespace: apps
 
 image:
   repository: yisraelbdocker/rkeapp
-  tag: "latest"
+  tag: "1.0.1"
   pullPolicy: IfNotPresent
   imagePort: 5000
   mountPath: "/app/static"
