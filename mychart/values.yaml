@@ -3,7 +3,7 @@ namespace: apps
 
 image:
   repository: ghcr.io/yisraelberman/flaskapp
-  tag: "6"
+  tag: "7"
   pullPolicy: IfNotPresent
   imagePort: 5000
   mountPath: "/app/static"
