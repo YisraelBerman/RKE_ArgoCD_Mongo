@@ -58,6 +58,83 @@ This project is implemented on 3 machines on Vsphere.
   # If you get Permission denied (publickey) while running ssh-copy-id ubuntu@remotemachine then on remote node edit the /etc/ssh/sshd_config file and update PasswordAuthentication from no to yes then restart the service using sudo systemctl restart sshd command
   ```
 - Confirm you can login from your workstation (with user rke) - including login from master to itself --> ssh rke@<node_ip>
+#### Docker
+On all nodes
+- Install Supported version of Docker
+  (version 19.03) 
+    ```
+    curl https://releases.rancher.com/install-docker/19.03.sh | sudo sh
+    sudo apt-get remove docker docker-engine docker.io containerd runc
+    sudo apt-get update
+    sudo apt-get install \
+      ca-certificates \
+      curl \
+      gnupg \
+      lsb-release
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install docker-ce=5:20.10.14~3-0~ubuntu-$(lsb_release -cs) docker-ce-cli=5:20.10.14~3-0~ubuntu-$(lsb_release -cs) containerd.io
+    sudo docker run hello-world
+    ```
+- Start docker with the following command:
+    ```
+    sudo systemctl start docker
+    sudo systemctl enable docker
+    ```
+    
+- Add permission to rke user for executing docker command docker with the following command:
+    ```
+    sudo usermod -aG docker rke
+    sudo systemctl restart docker
+    ```    
+
+- Configure sshd_config file to allow SSH TCP forwarding
+    ```
+    $ sudo nano /etc/ssh/sshd_config
+    AllowTcpForwarding yes
+    sudo systemctl restart sshd
+    ```
+#### RKE
+On master
+- Download RKE
+  ```
+  wget https://github.com/rancher/rke/releases/download/v1.4.17/rke_linux-amd64
+  ```
+- Upload the rke_linux-amd64 flder to /home/rke on the master server and run the following command:
+    ```
+    sudo chmod +x rke_linux-amd64
+    sudo mv rke_linux-amd64 /usr/local/bin/rke
+    rke --version
+    ```
+- Update cluster.yaml file
+- Create the cluster with the following command and wait until the cluster creation done:
+    ```
+    rke up // by default the installation will look for manifest file named 'cluster.yml'
+    ```
+- Set KUBECONFIG variable to the file generated with the following command:
+    ```
+    export KUBECONFIG=./kube_config_cluster.yml
+    OR choose your favourite way to communicate with kubernetes api (bashrc, kubectl config set-context etc..)
+    ```
+- Install kubectl if needed
+  ```
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  sudo mv /home/rke/kubectl /usr/bin/kubectl
+  sudo chmod +x /usr/bin/kubectl
+  ```
+- Check if the cluster setup was successful
+  ```
+  kubectl get nodes -o wide
+  kubectl get pods -A
+  ```
+  the output should be your cluster nodes and all the cluster pods
+
+
+
+
 
 rke built in ingress-nginx ( ingress image: rancher/nginx-ingress-controller:nginx-1.9.4-rancher1) 
 with editing /etc/hosts
