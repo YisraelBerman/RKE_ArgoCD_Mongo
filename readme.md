@@ -132,43 +132,25 @@ On master
   ```
   the output should be your cluster nodes and all the cluster pods
 
-
-
-
-
-rke built in ingress-nginx ( ingress image: rancher/nginx-ingress-controller:nginx-1.9.4-rancher1) 
-with editing /etc/hosts
-
-
-
-
-kubectl apply -f pvc.yaml -n apps
-kubectl apply -f populate-pvc-job.yaml -n apps
-kubectl apply -f deployment.yaml -n apps
-kubectl apply -f service.yaml -n apps
-
-
-
-
-
-
-
-
-
-
-
+rke has abuilt in ingress-nginx ( ingress image: rancher/nginx-ingress-controller:nginx-1.9.4-rancher1). 
+#### NFS server
+On master:
+```
 helm repo add nfs-ganesha-server-and-external-provisioner https://kubernetes-sigs.github.io/nfs-ganesha-server-and-external-provisioner/
 helm repo update
 helm install my-nfs nfs-ganesha-server-and-external-provisioner/nfs-server-provisioner
-
 sudo apt-get install nfs-common
-
+```
 on all nodes:
+```
 sudo apt-get update
 sudo apt-get install nfs-common rpcbind
 sudo rpc.statd
 sudo update-rc.d nfs-common defaults
+```
+#### Exposing app, argo and mongo
 
+add a hostname to /etc/hosts
 
 #metalLB:
 #kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.11/config/manifests/metallb-native.yaml
