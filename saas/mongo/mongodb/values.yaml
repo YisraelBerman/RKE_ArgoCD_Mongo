@@ -755,7 +755,7 @@ service:
   nameOverride: ""
   ## @param service.type Kubernetes Service type (only for standalone architecture)
   ##
-  type: ClusterIP
+  type: NodePort #ClusterIP
   ## @param service.portName MongoDB(&reg;) service port name (only for standalone architecture)
   ##
   portName: mongodb
