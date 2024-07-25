@@ -1,11 +1,8 @@
-
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: mongodb-ingress
   namespace: mongodb
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /mongo
 spec:
   ingressClassName: nginx
   rules:
@@ -16,7 +13,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: mongo-mongodb 
+            name: mongo-mongodb
             port:
               number: 27017
-
