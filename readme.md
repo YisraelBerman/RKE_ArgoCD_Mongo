@@ -210,7 +210,7 @@ sudo dpkg -i mongodb-compass_1.43.4_amd64.deb
 ```
 mongodb-compass
 ```
-- apply ingress
+
 
 
 
