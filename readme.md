@@ -198,6 +198,21 @@ to get to argocd:
 kubectl -n apps get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
 
+
+mongodb:
+- create app in argocd
+- Install MongoDB Compass:
+```
+wget https://downloads.mongodb.com/compass/mongodb-compass_1.43.4_amd64.deb
+sudo dpkg -i mongodb-compass_1.43.4_amd64.deb
+```
+- run mongodb-compass
+```
+mongodb-compass
+```
+
+
+
 ## usage
 
 

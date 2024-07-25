@@ -18,5 +18,5 @@ spec:
           service:
             name: mongo-mongodb 
             port:
-              number: 80
+              number: 27017
 
