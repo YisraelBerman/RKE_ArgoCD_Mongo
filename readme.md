@@ -212,9 +212,9 @@ mongodb-compass
 ```
 - add new connection:
 ```
-mongodb://<IP>:<port>
+mongodb://admin:password@<IP>:<port>
 ```
-
+- add DB and collection using the GUI
 
 
 ## usage
