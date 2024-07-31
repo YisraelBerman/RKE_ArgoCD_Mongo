@@ -157,6 +157,39 @@ add a hostname to /etc/hosts
 sudo nano /etc/hosts
     <node-ip> <node-hostname>
 ```
+Setup argocd:
+```
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update
+kubectl create namespace argocd
+helm install argocd argo/argo-cd --namespace argocd
+```
+need to change values:
+
+server:
+  # Disable HTTPS if needed
+  extraArgs:
+    - --insecure
+  ingress:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    
+    paths:
+      - /
+    tls: []
+
+
+to get to argocd:
+  <host>/argo-cd
+  
+
+kubectl -n apps get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+
+
+
+
 #metalLB:
 #kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.11/config/manifests/metallb-native.yaml
 #kubectl apply -f lb-config.yaml
