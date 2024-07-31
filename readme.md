@@ -4,11 +4,17 @@ A project that implements a RKE cluster with ArgoCD and MongoDB. The projects ha
 ## Getting started
 
 ### Prerequisites
+- machines to run the RKE cluster on.
+  for example: 1 master node and 2 workers on Vsphere.
+- Github project. Clone this project.
+  The files are devided into branches by their usage.
+  files setup:
+    - Main branch: app source files and github workflow for updating Helm chart. *For now version.txt needs to be updated manually (else the ArgoCD doesn't know the app has been upgraded).
+    - saas branch: files for setting up the project.
+    - Helm branch: chart that the ArgoCD followes.
 
 ### installation
-
-This project is implemented on 3 machines on Vsphere.
-
+On all nodes:
 - Update your Linux System with the following commands:
     ```
     sudo apt-get -y update
@@ -25,11 +31,8 @@ This project is implemented on 3 machines on Vsphere.
     On evry node run the following commands to set and configure the nodes hostnames:
     ```
     sudo hostnamectl set-hostname <node-hostname>
-    OR
-    sudo nano /etc/hosts
-    <node-ip> <node-hostname>
     ```
-- Create rke user on master and workers servers with the following commands:
+- Create rke user with the following commands:
     ```
     adduser rke
     passwd rke
@@ -45,6 +48,7 @@ This project is implemented on 3 machines on Vsphere.
   ```
   sudo su rke
   ```
+On master node:
 - Create SSH key on the master server: 
   ```
   ssh-keygen -t rsa
@@ -59,7 +63,7 @@ This project is implemented on 3 machines on Vsphere.
   ```
 - Confirm you can login from your workstation (with user rke) - including login from master to itself --> ssh rke@<node_ip>
 #### Docker
-On all nodes
+On all nodes:
 - Install Supported version of Docker
   (version 19.03) 
     ```
@@ -77,6 +81,7 @@ On all nodes
       $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     sudo apt-get update
     sudo apt-get install docker-ce=5:20.10.14~3-0~ubuntu-$(lsb_release -cs) docker-ce-cli=5:20.10.14~3-0~ubuntu-$(lsb_release -cs) containerd.io
+    # test
     sudo docker run hello-world
     ```
 - Start docker with the following command:
@@ -84,13 +89,11 @@ On all nodes
     sudo systemctl start docker
     sudo systemctl enable docker
     ```
-    
 - Add permission to rke user for executing docker command docker with the following command:
     ```
     sudo usermod -aG docker rke
     sudo systemctl restart docker
     ```    
-
 - Configure sshd_config file to allow SSH TCP forwarding
     ```
     $ sudo nano /etc/ssh/sshd_config
@@ -132,7 +135,7 @@ On master
   ```
   the output should be your cluster nodes and all the cluster pods
 
-rke has abuilt in ingress-nginx ( ingress image: rancher/nginx-ingress-controller:nginx-1.9.4-rancher1). 
+rke has a built-in ingress-nginx ( ingress image: rancher/nginx-ingress-controller:nginx-1.9.4-rancher1 ). 
 #### NFS server
 On master:
 ```
@@ -149,9 +152,11 @@ sudo rpc.statd
 sudo update-rc.d nfs-common defaults
 ```
 #### Exposing app, argo and mongo
-
 add a hostname to /etc/hosts
-
+```
+sudo nano /etc/hosts
+    <node-ip> <node-hostname>
+```
 #metalLB:
 #kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.11/config/manifests/metallb-native.yaml
 #kubectl apply -f lb-config.yaml
