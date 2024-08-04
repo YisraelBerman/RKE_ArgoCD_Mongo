@@ -151,23 +151,11 @@ sudo apt-get install nfs-common rpcbind
 sudo rpc.statd
 sudo update-rc.d nfs-common defaults
 ```
-#### Exposing app, argo and mongo
-add a hostname to /etc/hosts
+#### ArgoCD
+Use provided argo files or download helm chart. 
+Setup certificate or disable HTTPS if needed (values.yaml):
 ```
-sudo nano /etc/hosts
-    <node-ip> <node-hostname>
-```
-Setup argocd:
-```
-helm repo add argo https://argoproj.github.io/argo-helm
-helm repo update
-kubectl create namespace argocd
-helm install argocd argo/argo-cd --namespace argocd
-```
-need to change values:
-
 server:
-  # Disable HTTPS if needed
   extraArgs:
     - --insecure
   ingress:
@@ -178,6 +166,26 @@ server:
     paths:
       - /
     tls: []
+```
+Setup argocd:
+```
+cd <argo helm files>
+kubectl create namespace argocd
+helm install argocd argo/argo-cd --namespace argocd
+```
+#### Exposing app, argo and mongo
+Get host name. You hove 2 options:
+1. Pick a hostname and add a it to /etc/hosts
+```
+sudo nano /etc/hosts
+    <node-ip> <node-hostname>
+```
+Then argo and the app will be reachable only from you machine.
+2. Use metalLB:
+```
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.11/config/manifests/metallb-native.yaml
+kubectl apply -f lb-config.yaml
+```
 
 
 to get to argocd:
